@@ -8,6 +8,14 @@ output:
 
 ## Loading and preprocessing the data
 
+```{r}
+datafile <- "activity/activity.csv"
+setwd("C:/Users/david/datasciencecoursera/Reproducible Research/Week2/Project1/RepData_PeerAssessment1")
+df <- read.csv(datafile)
+summary(df)
+head(df)
+
+```
 
 
 ## What is mean total number of steps taken per day?
