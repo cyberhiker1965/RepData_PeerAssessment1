@@ -82,19 +82,55 @@ sum(is.na(df$steps))
 
 Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
-Create a new dataset that is equal to the original dataset but with the missing data filled in.
-
-Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
-
-Are there differences in activity patterns between weekdays and weekends?
-
-Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
+For my strategy I choose to use the mean of the equivalent 5-minute interval to populate any NA values.
 
 Create a new dataset that is equal to the original dataset but with the missing data filled in.
 
+```{r}
+# create a new data frame
+dfCopy <- df
+
+for (i in 1:nrow(dfCopy)) 
+{ 
+  if ( is.na(dfCopy[i,1]) ) {
+    dfCopy[i,1] <- meanInterval[meanInterval$interval == dfCopy[i,3] ,2]
+  }
+}
+```
+
+Let's compare the initial dataset to the new one to show some replaced NA values.
+
+```{r}
+head(df)
+head(dfCopy)
+```
+
 Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
 
+```{r}
+# total the steps by date
+totalStepsCopy <- aggregate(steps ~ date, dfCopy, sum)
+head(totalStepsCopy)
+
+# Then make a histogram of the result
+hist(totalStepsCopy$steps, main = "Histogram of Daily Steps",
+     border = "dark blue", col = "light blue", xlab="Total Steps/day")
+```
+
+The mean of the daily steps
+
+```{r}
+# calculate the mean of the daily steps
+mean(totalStepsCopy$steps)
+```
+
+The median of the daily steps
+
+```{r}
+# and calculate the median number of steps
+median(totalStepsCopy$steps)
+```
 
 
 
